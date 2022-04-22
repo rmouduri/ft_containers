@@ -10,9 +10,9 @@ namespace ft{
 	public:
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type			value_type;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type	difference_type;
-		    typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference			reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference			reference;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer				pointer;
-            typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const &			const_reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const &			const_reference;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const *				const_pointer;
 	protected:
 	public:

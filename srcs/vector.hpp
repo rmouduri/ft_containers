@@ -356,6 +356,8 @@ namespace ft {
 	private:
 		template<typename U>
 		void	swap(U &x, U &y){
+			if (&x == &y)
+				return ;
 			U tmp = x;
 			x = y;
 			y = tmp;

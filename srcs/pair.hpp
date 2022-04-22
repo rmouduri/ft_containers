@@ -15,14 +15,14 @@ namespace ft {
 			pair(void): first(), second() {}
 
 			template<class U, class V>
-			pair(const pair<U, V> & pr): first(pr.first), second(pr.second) {}
+			pair(const pair<U, V> & rhs): first(rhs.first), second(rhs.second) {}
 
-			pair(const first_type & x, const second_type & y): first(x), second(y) {}
+			pair(const first_type & a, const second_type & b): first(a), second(b) {}
 
-			pair & operator=(const pair & pr) {
+			pair & operator=(const pair & rhs) {
 				if (this != &rhs) {
-					this->first = pr.first;
-					this->second = pr.second;
+					this->first = rhs.first;
+					this->second = rhs.second;
 				}
 				return *this;
 			}
