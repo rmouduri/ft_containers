@@ -15,24 +15,21 @@ namespace ft
 		public:
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type			value_type;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type		difference_type;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference			reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference				reference;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer				pointer;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const &			const_reference;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const *				const_pointer;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category	iterator_category;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const &	const_reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type const *	const_pointer;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category		iterator_category;
 		protected:
 			pointer current;
 		public:
-		random_access_iterator() : current(pointer()){}
+		random_access_iterator() : current(pointer()) {}
 
-		random_access_iterator(pointer p) : current(p){
-		}
+		random_access_iterator(pointer p) : current(p) {}
 
-		random_access_iterator(const random_access_iterator& x) : current(x.current)
-		{ }
+		random_access_iterator(const random_access_iterator& x) : current(x.current) {}
 
-
-		pointer getCurrent() const{
+		pointer getCurrent() const {
 			return (this->current);
 		}
 		// template<typename U>
@@ -44,7 +41,7 @@ namespace ft
 
 		// operator random_access_iterator<const value_type>() const {return random_access_iterator<const value_type>(current);}
 
-		random_access_iterator base(){
+		random_access_iterator base() {
 			return current;
 		}
 		
@@ -74,7 +71,7 @@ namespace ft
 			return *current;
 		}
 
-		const_reference operator*() const{
+		const_reference operator*() const {
 			return *current;
 		}
 
@@ -116,11 +113,11 @@ namespace ft
 			pointer tmp(current);
 			while(tmp != sub.current)
 			{
-				if (tmp > sub.current){
+				if (tmp > sub.current) {
 					tmp--;
 					i++;
 				}
-				else{
+				else {
 					tmp++;
 					i--;
 				}

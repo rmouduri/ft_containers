@@ -5,7 +5,7 @@
 // # include <cstdio>
 // # include <memory>
 # include "pair.hpp"
-# include "RBTree.hpp"
+# include "BTree.hpp"
 
 namespace ft
 {
@@ -15,7 +15,7 @@ namespace ft
 	public:
 		typedef Key									key_type;
 		typedef T									mapped_type;
-		typedef pair<key_type, mapped_type>			value_type;
+		typedef pair<const key_type, mapped_type>	value_type;
 		typedef Compare								key_compare;
 		typedef std::less<T>						value_compare;
 		typedef Alloc								allocator_type;
@@ -27,15 +27,15 @@ namespace ft
 		typedef std::size_t			size_type;
 		typedef	ptrdiff_t			difference_type;
 
-		typedef typename RBTree<value_type, Compare>::iterator					iterator;
-		typedef typename RBTree<value_type, Compare>::const_iterator			const_iterator;
-		// typedef typename RBTree<value_type, Compare>::reverse_iterator		reverse_iterator;
-		// typedef typename RBTree<value_type, Compare>::const_reverse_iterator	const_reverse_iterator;
+		typedef typename BTree<value_type, Compare, Alloc>::iterator				iterator;
+		typedef typename BTree<value_type, Compare, Alloc>::const_iterator			const_iterator;
+		typedef typename BTree<value_type, Compare, Alloc>::reverse_iterator		reverse_iterator;
+		typedef typename BTree<value_type, Compare, Alloc>::const_reverse_iterator	const_reverse_iterator;
 
 	private:
-		key_compare						_comp;
-		allocator_type					_allocator;
-		RBTree<value_type, key_compare>	_data;
+		key_compare								_comp;
+		allocator_type							_allocator;
+		BTree<value_type, key_compare, Alloc>	_data;
 
 	public:
 		map(): _comp(), _allocator(), _data() {}
@@ -65,15 +65,32 @@ namespace ft
 			return this->_data.insert(val);
 		}
 
+		iterator insert (iterator position, const value_type & val) {
+			return this->_data.insert(position, val);
+		}
+
+		template<typename InputIt>
+		void insert(InputIt first, InputIt last) {
+			_data.insert(first, last);
+		}
+
 		iterator begin() { return this->_data.begin(); }
-		const_iterator begin() const { return const_iterator(this->_data.begin()); }
+		const_iterator begin() const { return this->_data.begin(); }
 
 		iterator end() { return this->_data.end(); }
-		const_iterator end() const { return const_iterator(this->_data.end()); }
+		const_iterator end() const { return this->_data.end(); }
+		
+		reverse_iterator rbegin() { return this->_data.rbegin(); }
+		const_reverse_iterator rbegin() const { return this->_data.rbegin(); }
 
-		void printinorder() { this->_data._printInOrder(this->_data.getData());}
+		reverse_iterator rend() { return this->_data.rend(); }
+		const_reverse_iterator rend() const { return this->_data.rend(); }
 
-		void print2d() { this->_data.print2D();}
+		size_type size() const { return this->_data.getSize(); }
+
+		size_type max_size() const { return this->_data.getMaxSize(); }
+
+		void print2d() { this->_data.print2D(); }
 	}; // map
 } // namespace ft
 

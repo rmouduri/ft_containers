@@ -19,13 +19,13 @@ namespace ft {
 
 			pair(const first_type & a, const second_type & b): first(a), second(b) {}
 
-			pair & operator=(const pair & rhs) {
-				if (this != &rhs) {
-					this->first = rhs.first;
-					this->second = rhs.second;
-				}
-				return *this;
-			}
+			// pair & operator=(const pair & rhs) {
+			// 	if (this != &rhs) {
+			// 		this->first = rhs.first;
+			// 		this->second = rhs.second;
+			// 	}
+			// 	return *this;
+			// }
 	};
 
 	template <class T1, class T2>
