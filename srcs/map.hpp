@@ -151,7 +151,8 @@ namespace ft
 		// 	return lhs._data >= rhs._data;
 		// }
 
-		void print2d() { this->_data.print2D(); }
+		private:
+			void print2d() { this->_data.print2D(); }
 	}; // map
 } // namespace ft
 
