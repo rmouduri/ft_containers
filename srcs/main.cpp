@@ -1,43 +1,65 @@
 # include <map>
+
+# include <list>
+
 # include <iostream>
 # include "map.hpp"
 # include "pair.hpp"
-// # include "vector.hpp"
 
-int main()
-{
+
+template <typename T>
+void print(T rit) {
+	std::cout << rit->first << '\t' << rit->second << '\n';
+}
+
+int main(void) {
+	ft::map<float, int> map;
+
+	map[2.5] = 7;
+	map[1.5] = 14;
+	map[0.5] = 21;
+	map[-0.5] = 28;
+	map[-1.5] = 35;
+
 	{
-		std::map<std::string, int> map;
+		ft::map<float, int>::iterator it = map.begin(), ite = map.end();
 
-		map.insert(std::pair<std::string, int>("asadasd", 1));
-		map.insert(std::pair<std::string, int>("cdasdasd", 3));
-		map.insert(std::pair<std::string, int>("bfeqwf", 2));
-		std::pair<std::map<std::string, int>::iterator, bool> oui = map.insert(std::pair<std::string, int>("asadasd", 4));
-
-		std::cout << oui.second << oui.first->second << '\n';
-		std::map<std::string, int>::iterator it = map.begin();
-		int i = 0;
-		while (it != map.end()) {
-			std::cout << it->first << ' ' << it->second << '\n';
+		while (it != ite) {
+			std::cout << '(' << it->first << ':' << it->second << "):\n\tparent: ";
+			if (it.getCurrent()->parent) {
+				std::cout << '(' << it.getCurrent()->parent->data.first << ':' << it.getCurrent()->parent->data.first << ")\n\tleft: ";
+			} else std::cout << "No Parent\n\tleft: ";
+			if (it.getCurrent()->left) {
+				std::cout << '(' << it.getCurrent()->left->data.first << ':' << it.getCurrent()->left->data.first << ")\n\tright: ";
+			} else std::cout << "No Left\n\tright: ";
+			if (it.getCurrent()->right) {
+				std::cout << '(' << it.getCurrent()->right->data.first << ':' << it.getCurrent()->right->data.first << ")\n";
+			} else std::cout << "No Right\n";
 			++it;
 		}
 	}
-	{
-		ft::map<int, int> map;
+	ft::map<float, int>::reverse_iterator rit = map.rbegin(), rite = map.rend();
 
-		for (int i = 0; i < 5; ++i)
-			map.insert(ft::pair<int, int>(i, i));
-
-		map.insert(ft::pair<int, int>(10, 10));
-		ft::map<int, int>::reverse_iterator it = map.rbegin();
-
-		// it->second = 10;
-		// it->first = 10;
-		// map.print2d();
-		while (it != map.rend()) {
-			std::cout << it->first << ' ' << it->second << '\n';
-			it++;
-		}
+	while (rit != rite) {
+		std::cout << rit->first << ':' << rit->second << " from " << rit.getCurrent()->data.first << ':' << rit.getCurrent()->data.second << std::endl;
+		++rit;
 	}
+	std::cout << std::endl;
+
+	ft::map<float, int>::iterator it = map.begin(), ite = map.end();
+	--it;
+	while (--ite != it) {
+		std::cout << '(' << ite->first << ':' << ite->second << "):\n\tparent: ";
+			if (ite.getCurrent()->parent) {
+				std::cout << '(' << ite.getCurrent()->parent->data.first << ':' << ite.getCurrent()->parent->data.first << ")\n\tleft: ";
+			} else std::cout << "No Parent\n\tleft: ";
+			if (ite.getCurrent()->left) {
+				std::cout << '(' << ite.getCurrent()->left->data.first << ':' << ite.getCurrent()->left->data.first << ")\n\tright: ";
+			} else std::cout << "No Left\n\tright: ";
+			if (ite.getCurrent()->right) {
+				std::cout << '(' << ite.getCurrent()->right->data.first << ':' << ite.getCurrent()->right->data.first << ")\n";
+			} else std::cout << "No Right\n";
+	}
+
 	return 0;
 }

@@ -17,7 +17,6 @@ namespace ft
 		typedef T									mapped_type;
 		typedef pair<const key_type, mapped_type>	value_type;
 		typedef Compare								key_compare;
-		typedef std::less<T>						value_compare;
 		typedef Alloc								allocator_type;
 
 		typedef value_type &		reference;
@@ -38,6 +37,17 @@ namespace ft
 		BTree<value_type, key_compare, Alloc>	_data;
 
 	public:
+		class value_compare {
+			protected:
+				Compare comp;
+
+			public:
+				value_compare(Compare c): comp(c) {}
+				~value_compare() {}
+
+				bool operator()(const value_type & x, const value_type & y) const { return comp(x.first, y.first); }
+		}; // value_compare
+
 		map(): _comp(), _allocator(), _data() {}
 
 		template<typename InputIt>
@@ -89,6 +99,57 @@ namespace ft
 		size_type size() const { return this->_data.getSize(); }
 
 		size_type max_size() const { return this->_data.getMaxSize(); }
+
+		iterator find(const key_type & k) { return iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T())), this->_data._getRoot()); }
+
+		const_iterator find(const key_type & k) const { return const_iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T())), this->_data._getRoot()); }
+
+		mapped_type & operator[](const key_type & k) {
+			iterator it = this->find(k);
+
+			if (it != this->_data.end())
+				return it->second;
+			else
+				return this->insert(ft::make_pair(k, T())).first->second;
+		}
+
+		key_compare key_comp() const { return this->_comp; }
+
+		value_compare value_comp() const { return value_compare(this->_comp); }
+
+		bool empty() const { return !this->_data.getSize(); }
+
+		allocator_type get_allocator() const { return this->_allocator; }
+
+		size_type count(const key_type & k) const {
+			const_iterator it = this->find(k);
+
+			return it != this->end();
+		}
+
+		// friend bool operator==(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data == rhs._data;
+		// }
+
+		// friend bool operator!=(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data != rhs._data;
+		// }
+
+		// friend bool operator<(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data < rhs._data;
+		// }
+
+		// friend bool operator>(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data > rhs._data;
+		// }
+
+		// friend bool operator<=(const ft::map<Key, T, Compare, Allocator> & lhs,  const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data <= rhs._data;
+		// }
+
+		// friend bool operator>=(const ft::map<Key, T, Compare, Allocator> & lhs,  const ft::map<Key, T, Compare, Allocator> & rhs) {
+		// 	return lhs._data >= rhs._data;
+		// }
 
 		void print2d() { this->_data.print2D(); }
 	}; // map
