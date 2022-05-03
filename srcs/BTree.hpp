@@ -36,19 +36,17 @@ namespace ft {
 
 		}; // Node
 
-		template<typename ItT, int B>
+		template<typename ItT, int B> //ItT = Node * , T = pair<Key, mapped_type>
 		class TreeIterator {
 			// protected:
 			public:
-				ItT _current; //ItT = Node * , T = pair<x, y>
-				ItT _root;
+				ItT _current;
 
 				ItT getCurrent(void) const { return this->_current; }
-				ItT getRoot(void) const { return this->_root; }
 
 			public:
-				TreeIterator(): _current(0), _root(0) {}
-				TreeIterator(ItT current, ItT root): _current(current), _root(root) {}
+				TreeIterator(): _current(0) {}
+				TreeIterator(ItT current): _current(current) {}
 				TreeIterator(const TreeIterator & rhs) { *this = rhs; }
 				~TreeIterator() {}
 
@@ -56,22 +54,17 @@ namespace ft {
 				TreeIterator & operator=(const TreeIterator & rhs) {
 					if (this != &rhs) {
 						_current = rhs.getCurrent();
-						_root =rhs.getRoot();
 					}
 					return *this;
 				}
 
 				T & operator*(void) { return _current->data; }
-				// const T & operator*(void) const { return _current->data; }
+				const T & operator*(void) const { return _current->data; }
 
 				T * operator->(void) { return &_current->data; }
 				const T * operator->(void) const { return &_current->data; }
 
 				TreeIterator & operator++(void) {
-					// if (!this->_current) {
-					// 	this->_current = _getFirst(_root, _begin);
-					// 	return *this;
-					// }
 					if (!_current->right) {
 						Node * prev = 0;
 						do {
@@ -91,10 +84,6 @@ namespace ft {
 				}
 
 				TreeIterator & operator--(void) {
-					// if (!this->_current) {
-					// 	this->_current = _getLast(_root);
-					// 	return *this;
-					// }
 					if (_current->left)
 						_current = _goMaxRight(_current->left);
 					else {
@@ -129,16 +118,15 @@ namespace ft {
 				const ItT getCurrent(void) const { return this->_current; }
 
 			public:
-				TreeConstIterator() { this->_current = 0; this->_root = 0; }
-				TreeConstIterator(ItT current, ItT root) { this->_current = current; this->_root = root; }
-				TreeConstIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); this->_root = rhs.getRoot(); }
+				TreeConstIterator() { this->_current = 0; }
+				TreeConstIterator(ItT current) { this->_current = current; }
+				TreeConstIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); }
 				TreeConstIterator(const TreeConstIterator & rhs): TreeIterator<ItT, B>(rhs) { *this = rhs; }
 				~TreeConstIterator() {}
 
 				TreeConstIterator & operator=(const TreeConstIterator & rhs) {
 					if (this != &rhs) {
 						this->_current = rhs.getCurrent();
-						this->_root = rhs.getRoot();
 					}
 					return *this;
 				}
@@ -151,16 +139,15 @@ namespace ft {
 		template<typename ItT, int B>
 		class TreeReverseIterator: public TreeIterator<ItT, B> {
 			public:
-				TreeReverseIterator() { this->_current = 0; this->_root = 0; }
-				TreeReverseIterator(ItT current, ItT root) { this->_current = current; this->_root = root; }
+				TreeReverseIterator() { this->_current = 0; }
+				TreeReverseIterator(ItT current) { this->_current = current; }
 				TreeReverseIterator(const TreeReverseIterator & rhs): TreeIterator<ItT, B>(rhs) { *this = rhs; }
-				TreeReverseIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); this->_root = rhs.getRoot(); }
+				TreeReverseIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); }
 				~TreeReverseIterator() {}
 
 				TreeReverseIterator & operator=(const TreeReverseIterator & rhs) {
 					if (this != &rhs) {
 						this->_current = rhs.getCurrent();
-						this->_root = rhs.getRoot();
 					}
 					return *this;
 				}
@@ -197,9 +184,7 @@ namespace ft {
 
 				TreeReverseIterator operator--(int) {
 					TreeReverseIterator it(*this);
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					this->operator--();
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					return it;
 				}
 
@@ -219,13 +204,11 @@ namespace ft {
 
 				TreeReverseIterator operator++(int) {
 					TreeReverseIterator it(*this);
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					this->operator++();
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					return it;
 				}
 
-				TreeIterator<ItT, 0> base() const { return TreeIterator<ItT, 0>(this->getCurrent(), this->getRoot()); }
+				TreeIterator<ItT, 0> base() const { return TreeIterator<ItT, 0>(this->getCurrent()); }
 
 				bool operator!=(TreeReverseIterator<ItT, 2> rhs) const { return this->base() != rhs.base(); }
 				bool operator==(TreeReverseIterator<ItT, 2> rhs) const { return this->base() == rhs.base(); }
@@ -241,18 +224,17 @@ namespace ft {
 				const ItT getCurrent(void) const { return this->_current; }
 
 			public:
-				TreeConstReverseIterator() { this->_current = 0; this->_root = 0; }
-				TreeConstReverseIterator(ItT current, ItT root) { this->_current = current; this->_root = root; }
+				TreeConstReverseIterator() { this->_current = 0; }
+				TreeConstReverseIterator(ItT current) { this->_current = current; }
 				TreeConstReverseIterator(const TreeConstReverseIterator & rhs): TreeIterator<ItT, B>(rhs) { *this = rhs; }
-				TreeConstReverseIterator(const TreeReverseIterator<ItT, 2> & rhs) { this->_current = rhs.getCurrent(); this->_root = rhs.getRoot(); }
-				TreeConstReverseIterator(const TreeConstIterator<ItT, 1> & rhs) { this->_current = rhs.getCurrent(); this->_root = rhs.getRoot(); }
-				TreeConstReverseIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); this->_root = rhs.getRoot(); }
+				TreeConstReverseIterator(const TreeReverseIterator<ItT, 2> & rhs) { this->_current = rhs.getCurrent(); }
+				TreeConstReverseIterator(const TreeConstIterator<ItT, 1> & rhs) { this->_current = rhs.getCurrent(); }
+				TreeConstReverseIterator(const TreeIterator<ItT, 0> & rhs) { this->_current = rhs.getCurrent(); }
 				~TreeConstReverseIterator() {}
 
 				TreeConstReverseIterator & operator=(const TreeConstReverseIterator & rhs) {
 					if (this != &rhs) {
 						this->_current = rhs.getCurrent();
-						this->_root = rhs.getRoot();
 					}
 					return *this;
 				}
@@ -288,9 +270,7 @@ namespace ft {
 
 				TreeConstReverseIterator operator--(int) {
 					TreeConstReverseIterator it(*this);
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					this->operator--();
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					return it;
 				}
 
@@ -310,13 +290,11 @@ namespace ft {
 
 				TreeConstReverseIterator operator++(int) {
 					TreeConstReverseIterator it(*this);
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					this->operator++();
-					// std::cout << "sss: " << it->first << ' ' << it->second << std::endl;
 					return it;
 				}
 
-				// TreeIterator<ItT, 1> base() const { return TreeConstIterator<ItT, 0>(this->getCurrent(), this->getRoot()); }
+				// TreeIterator<ItT, 1> base() const { return TreeConstIterator<ItT, 0>(this->getCurrent()); }
 
 				bool operator!=(TreeIterator<ItT, 2> rhs) const { return this->getCurrent() != rhs.getCurrent(); }
 				bool operator==(TreeIterator<ItT, 2> rhs) const { return this->getCurrent() == rhs.getCurrent(); }
@@ -403,7 +381,7 @@ namespace ft {
 		ft::pair<iterator, bool> insert(const T & val) {
 			Node * insertedNode = findNode(this->_root, val);
 			if (insertedNode && insertedNode != _end)
-				return ft::pair<iterator, bool>(iterator(insertedNode, _root), false);
+				return ft::pair<iterator, bool>(iterator(insertedNode), false);
 
 			#ifdef DEBUG
 				std::cout << "adding node " << val.first << ':' << std::endl;
@@ -418,7 +396,7 @@ namespace ft {
 				print2D();
 			#endif
 
-			return ft::pair<iterator, bool>(iterator(insertedNode, _root), true);
+			return ft::pair<iterator, bool>(iterator(insertedNode), true);
 		}
 
 		iterator insert(iterator position, const value_type & val) {
@@ -665,7 +643,7 @@ namespace ft {
 
 			while (tmp && tmp->left && tmp->left != _begin)
 				tmp = tmp->left;
-			return iterator(tmp, _root);
+			return iterator(tmp);
 		}
 
 		const_iterator begin() const {
@@ -673,17 +651,17 @@ namespace ft {
 
 			while (tmp && tmp->left && tmp->left != _begin)
 				tmp = tmp->left;
-			return const_iterator(tmp, _root);
+			return const_iterator(tmp);
 		}
 
-		iterator end() { return iterator(_end, _root); }
-		const_iterator end() const { return const_iterator(_end, _root); }
+		iterator end() { return iterator(_end); }
+		const_iterator end() const { return const_iterator(_end); }
 
-		reverse_iterator rbegin() { return reverse_iterator(_end, _root); }
-		const_reverse_iterator rbegin() const { return const_reverse_iterator(_end, _root); }
+		reverse_iterator rbegin() { return reverse_iterator(_end); }
+		const_reverse_iterator rbegin() const { return const_reverse_iterator(_end); }
 
-		reverse_iterator rend() { return reverse_iterator(_getFirst(_root, _begin), _root); }
-		const_reverse_iterator rend() const { return const_reverse_iterator(getBF(_root, _begin), _root); }
+		reverse_iterator rend() { return reverse_iterator(_getFirst(_root, _begin)); }
+		const_reverse_iterator rend() const { return const_reverse_iterator(_getFirst(_root, _begin)); }
 
 		size_type getSize() const { return this->_size; }
 

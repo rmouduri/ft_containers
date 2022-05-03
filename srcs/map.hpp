@@ -100,9 +100,9 @@ namespace ft
 
 		size_type max_size() const { return this->_data.getMaxSize(); }
 
-		iterator find(const key_type & k) { return iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T())), this->_data._getRoot()); }
+		iterator find(const key_type & k) { return iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
 
-		const_iterator find(const key_type & k) const { return const_iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T())), this->_data._getRoot()); }
+		const_iterator find(const key_type & k) const { return const_iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
 
 		mapped_type & operator[](const key_type & k) {
 			iterator it = this->find(k);
