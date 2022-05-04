@@ -379,6 +379,14 @@ namespace ft {
 		BTree & operator=(const BTree & rhs) {
 			if (this != &rhs) {
 				this->clear(this->_root);
+				if (_begin) {
+				this->_allocator.destroy(_begin);
+				this->_allocator.deallocate(_begin, 1);
+				}
+				if (_end) {
+					this->_allocator.destroy(_end);
+					this->_allocator.deallocate(_end, 1);
+				}
 				this->_root = _copyRoot(this->_allocator, rhs._root);
 				this->_size = rhs._size;
 				this->_comp = rhs._comp;
@@ -402,6 +410,10 @@ namespace ft {
 		Node * addNode(const T & value, Node * & root, Node * parent = 0) {
 			if (!root) {
 				++this->_size;
+				if (!_begin)
+					_begin = allocateNode(T(), 0);
+				if (!_end)
+					_end = allocateNode(T(), 0);
 				this->_root = allocateNode(value, parent, _begin, _end);
 				_begin->parent = this->_root;
 				_end->parent = this->_root;
@@ -720,6 +732,10 @@ namespace ft {
 
 			while (tmp && tmp->left && tmp->left != _begin)
 				tmp = tmp->left;
+			// if (tmp)
+			// 	std::cerr << "returning tmp";
+			// else if (_end) std::cerr << "returning end";
+			// else std::cerr << "END IS NONE ";
 			return iterator(tmp ? tmp : _end);
 		}
 
@@ -728,6 +744,10 @@ namespace ft {
 
 			while (tmp && tmp->left && tmp->left != _begin)
 				tmp = tmp->left;
+			// if (tmp)
+			// 	std::cerr << "returning tmp";
+			// else if (_end) std::cerr << "returning end";
+			// else std::cerr << "END IS NONE ";
 			return const_iterator(tmp ? tmp : _end);
 		}
 
@@ -737,8 +757,8 @@ namespace ft {
 		reverse_iterator rbegin() { return reverse_iterator(_end); }
 		const_reverse_iterator rbegin() const { return const_reverse_iterator(_end); }
 
-		reverse_iterator rend() { return reverse_iterator(_getFirst(_root, _begin)); }
-		const_reverse_iterator rend() const { return const_reverse_iterator(_getFirst(_root, _begin)); }
+		reverse_iterator rend() { return reverse_iterator(_root ? _getFirst(_root, _begin) : _end); }
+		const_reverse_iterator rend() const { return const_reverse_iterator(_root ? _getFirst(_root, _begin) : _end); }
 
 		size_type getSize() const { return this->_size; }
 
@@ -769,8 +789,8 @@ namespace ft {
 				this->_allocator.deallocate(root, 1);
 				_root = 0;
 				_size = 0;
-				_end = 0;
-				_begin = 0;
+				_end = allocateNode(T(), 0);
+				_begin = allocateNode(T(), 0);
 			}
 			else {
 				this->_allocator.destroy(root);

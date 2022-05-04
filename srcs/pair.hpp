@@ -19,13 +19,16 @@ namespace ft {
 
 			pair(const first_type & a, const second_type & b): first(a), second(b) {}
 
-			// pair & operator=(const pair & rhs) {
-			// 	if (this != &rhs) {
-			// 		this->first = rhs.first;
-			// 		this->second = rhs.second;
-			// 	}
-			// 	return *this;
-			// }
+			pair & operator=(const pair & rhs) {
+				if (this != &rhs) {
+					unconst(this->first) = rhs.first;
+					this->second = rhs.second;
+				}
+				return *this;
+			}
+		private:
+			template < class X >
+			X & unconst( X const & t ) { return const_cast<X &>(t); }
 	};
 
 	template<typename T1, typename T2>

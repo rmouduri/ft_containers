@@ -15,7 +15,7 @@ namespace ft
 	public:
 		typedef Key									key_type;
 		typedef T									mapped_type;
-		typedef pair<key_type, mapped_type>	value_type;
+		typedef pair<const key_type, mapped_type>			value_type;
 		typedef Compare								key_compare;
 		typedef Alloc								allocator_type;
 
@@ -150,7 +150,11 @@ namespace ft
 
 		ft::pair<iterator, iterator> equal_range(const key_type & k) { return _data.equal_range(ft::make_pair(k, typename value_type::second_type())); }
 
-		ft::pair<const_iterator, const_iterator> equal_range(const key_type & k) const { return _data.equal_range(ft::make_pair(k, typename value_type::second_type())); }
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type & k) const { return _data.
+																							equal_range(
+																							ft::make_pair(
+																							k, 
+																							typename value_type::second_type())); }
 
 		friend bool operator==(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data == rhs._data; }
 
