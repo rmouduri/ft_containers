@@ -15,13 +15,19 @@ void print(T rit) {
 int main(void) {
 	ft::map<float, int> map;
 
-	map[2.5] = 7;
-	map[1.5] = 14;
-	map[0.5] = 21;
-	map[-0.5] = 28;
-	map[-1.5] = 35;
+	map[20] = 0;
+	map[10] = 0;
+	map[30] = 0;
+	map[15] = 0;
+	map[5] = 0;
 
-	{
+		// map.erase(30);
+		map[6] = 0;
+		map[7] = 0;
+		map[9] = 0;
+		
+		map[8] = 0;
+		// map.erase(10);
 		ft::map<float, int>::iterator it = map.begin(), ite = map.end();
 
 		while (it != ite) {
@@ -37,29 +43,6 @@ int main(void) {
 			} else std::cout << "No Right\n";
 			++it;
 		}
-	}
-	ft::map<float, int>::reverse_iterator rit = map.rbegin(), rite = map.rend();
-
-	while (rit != rite) {
-		std::cout << rit->first << ':' << rit->second << " from " << rit.getCurrent()->data.first << ':' << rit.getCurrent()->data.second << std::endl;
-		++rit;
-	}
-	std::cout << std::endl;
-
-	ft::map<float, int>::iterator it = map.begin(), ite = map.end();
-	--it;
-	while (--ite != it) {
-		std::cout << '(' << ite->first << ':' << ite->second << "):\n\tparent: ";
-			if (ite.getCurrent()->parent) {
-				std::cout << '(' << ite.getCurrent()->parent->data.first << ':' << ite.getCurrent()->parent->data.first << ")\n\tleft: ";
-			} else std::cout << "No Parent\n\tleft: ";
-			if (ite.getCurrent()->left) {
-				std::cout << '(' << ite.getCurrent()->left->data.first << ':' << ite.getCurrent()->left->data.first << ")\n\tright: ";
-			} else std::cout << "No Left\n\tright: ";
-			if (ite.getCurrent()->right) {
-				std::cout << '(' << ite.getCurrent()->right->data.first << ':' << ite.getCurrent()->right->data.first << ")\n";
-			} else std::cout << "No Right\n";
-	}
 
 	return 0;
 }

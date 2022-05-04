@@ -9,13 +9,13 @@
 
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key, T> > >
+	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<Key, T> > >
 	class map {
 
 	public:
 		typedef Key									key_type;
 		typedef T									mapped_type;
-		typedef pair<const key_type, mapped_type>	value_type;
+		typedef pair<key_type, mapped_type>	value_type;
 		typedef Compare								key_compare;
 		typedef Alloc								allocator_type;
 
@@ -127,29 +127,42 @@ namespace ft
 			return it != this->end();
 		}
 
-		// friend bool operator==(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data == rhs._data;
-		// }
+		void swap(map & rhs) {
+			if (this != &rhs)
+				this->_data.swap(rhs._data);
+		}
 
-		// friend bool operator!=(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data != rhs._data;
-		// }
+		void clear() { this->_data.clear(this->_data._getRoot()); }
 
-		// friend bool operator<(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data < rhs._data;
-		// }
+		size_t erase(const key_type & k) { return _data.erase(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
 
-		// friend bool operator>(const ft::map<Key, T, Compare, Allocator> & lhs, const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data > rhs._data;
-		// }
+		void erase(iterator pos) { _data.erase(pos); }
 
-		// friend bool operator<=(const ft::map<Key, T, Compare, Allocator> & lhs,  const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data <= rhs._data;
-		// }
+		void erase(iterator first, iterator last) { _data.erase(first, last); }
 
-		// friend bool operator>=(const ft::map<Key, T, Compare, Allocator> & lhs,  const ft::map<Key, T, Compare, Allocator> & rhs) {
-		// 	return lhs._data >= rhs._data;
-		// }
+		iterator lower_bound(const key_type & k) { return _data.lower_bound(ft::make_pair(k, typename value_type::second_type())); }
+
+		const_iterator lower_bound(const key_type & k) const { return _data.lower_bound( ft::make_pair(k, typename value_type::second_type())); }
+
+		iterator upper_bound(const key_type & k) { return _data.upper_bound(ft::make_pair(k, typename value_type::second_type())); }
+
+		const_iterator upper_bound(const key_type & k) const { return _data.upper_bound(ft::make_pair(k, typename value_type::second_type())); }
+
+		ft::pair<iterator, iterator> equal_range(const key_type & k) { return _data.equal_range(ft::make_pair(k, typename value_type::second_type())); }
+
+		ft::pair<const_iterator, const_iterator> equal_range(const key_type & k) const { return _data.equal_range(ft::make_pair(k, typename value_type::second_type())); }
+
+		friend bool operator==(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data == rhs._data; }
+
+		friend bool operator!=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data != rhs._data; }
+
+		friend bool operator<(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data < rhs._data; }
+
+		friend bool operator>(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data > rhs._data; }
+
+		friend bool operator<=(const ft::map<Key, T, Compare, Alloc> & lhs,  const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data <= rhs._data; }
+
+		friend bool operator>=(const ft::map<Key, T, Compare, Alloc> & lhs,  const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data >= rhs._data; }
 
 		private:
 			void print2d() { this->_data.print2D(); }
