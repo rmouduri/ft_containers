@@ -23,7 +23,7 @@ namespace ft {
 			Node(T value, Node * parent, Node * left = 0, Node * right = 0, int height = 0): data(value), parent(parent), left(left), right(right), height(height) {}
 			~Node() {}
 
-			void swap(Node& rhs) {
+			void swap(Node & rhs) {
 				Node * leftTmp = left;
 				Node * rightTmp = right;
 
@@ -362,8 +362,8 @@ namespace ft {
 									_size(rhs._size),
 									_comp(rhs._comp),
 									_allocator(rhs._allocator),
-									_begin(_goMaxLeft(_root)),
-									_end(_goMaxRight(_root)) {}
+									_begin(_root ? _goMaxLeft(_root) : allocateNode(T(), 0)),
+									_end(_root ? _goMaxRight(_root) : allocateNode(T(), 0)) {}
 		~BTree() {
 			this->clear(this->_root);
 			if (_begin) {
@@ -391,8 +391,8 @@ namespace ft {
 				this->_size = rhs._size;
 				this->_comp = rhs._comp;
 				this->_allocator = rhs._allocator;
-				this->_begin = _goMaxLeft(this->_root);
-				this->_end = _goMaxRight(this->_root);
+				this->_begin = _root ? _goMaxLeft(this->_root) : allocateNode(T(), 0);
+				this->_end = _root ? _goMaxRight(this->_root) : allocateNode(T(), 0);
 			}
 			return *this;
 		}
@@ -942,6 +942,7 @@ namespace ft {
 
 		const_iterator upper_bound(const_reference value) const {
 			Node * p = findUpperBound(_root, value);
+
 
 			return p ? const_iterator(p) : end();
 		}

@@ -148,7 +148,11 @@ namespace ft
 
 		const_iterator upper_bound(const key_type & k) const { return _data.upper_bound(ft::make_pair(k, typename value_type::second_type())); }
 
-		ft::pair<iterator, iterator> equal_range(const key_type & k) { return _data.equal_range(ft::make_pair(k, typename value_type::second_type())); }
+		ft::pair<iterator, iterator> equal_range(const key_type & k) { return _data.
+																				equal_range(
+																				ft::make_pair(
+																				k,
+																				typename value_type::second_type())); }
 
 		ft::pair<const_iterator, const_iterator> equal_range(const key_type & k) const { return _data.
 																							equal_range(

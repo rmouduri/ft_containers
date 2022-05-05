@@ -12,7 +12,7 @@ namespace ft {
 			first_type first;
 			second_type second;
 
-			pair(void): first(), second() {}
+			pair(void): first(T1()), second(T2()) {}
 
 			template<class U, class V>
 			pair(const pair<U, V> & rhs): first(rhs.first), second(rhs.second) {}
