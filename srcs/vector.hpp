@@ -94,8 +94,8 @@ namespace ft {
 		reverse_iterator rbegin() { return this->end(); }
 		const_reverse_iterator rbegin() const { return this->end(); }
 
-		reverse_iterator rend() { return this->_start - 1; }
-		const_reverse_iterator rend() const { return this->_start - 1; }
+		reverse_iterator rend() { return this->begin(); }
+		const_reverse_iterator rend() const { return this->begin(); }
 
 
 		//////////////////////// Capacity ////////////////////////
@@ -202,53 +202,63 @@ namespace ft {
 
 		void pop_back(void) { this->_allocator.destroy(this->_start + --this->_size); }
 
-		iterator insert(iterator position, const value_type& val) {
+		iterator insert(iterator position, const value_type & val) {
 			size_type pos = position - this->begin();
 
-			if (position == this->end()) {
-				this->push_back(val);
-				return this->end() - 1;
-			}
 			this->push_back(val);
-			for (size_type i = this->_size - 1; i > pos; --i)
+			for (size_type i = this->end() - this->begin(); i > pos + 1;) {
+				--i;
 				this->_start[i] = this->_start[i - 1];
+			}
 
 			this->_start[pos] = val;
-			return position;
+
+			return iterator(this->_start + pos);
 		}
 
-		void insert(iterator position, size_type n, const value_type& val) {
+		void insert(iterator position, size_type n, const value_type & val) {
 			size_type pos = position - this->begin();
 
+			if (!n)
+				return ;
 			if (this->_size + n > this->_cap) {
 				if (this->_size + n > this->_cap * 2)
 					this->reserve(this->_size + n);
 				else
 					this->reserve(this->_cap * 2);
 			}
-			for (size_type i = this->_size + n - 1; i > pos; --i) {
-				if (i >= this->_size)
-					this->_allocator.construct(&this->_start[i], (int)((int)i - n) >= 0 ? this->_start[i - n] : val);
-				else
-					this->_start[i] = i - n >= 0 ? this->_start[i - n] : val;
+
+			if (this->_size > 0 && pos != this->_size) {
+				for (size_type i = this->_size - 1; i >= pos; --i) {
+					if (i + n >= this->_size)
+						this->_allocator.construct(this->_start + i + n, this->_start[i]);
+					else this->_start[i + n] = this->_start[i];
+
+					if (i == pos)
+						break;
+				}
 			}
-			for (size_type i = 0; i < n; ++i) {
-				if (pos + i > this->_size)
-					this->_allocator.construct(&this->_start[pos + i], val);
-				else
-					this->_start[pos + i] = val;
+
+			for (size_type i = pos; i != pos + n; ++i) {
+				if (i >= this->_size)
+					this->_allocator.construct(this->_start + i, val);
+				else this->_start[i] = val;
 			}
 			this->_size += n;
 		}
 
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last,
-			typename ft::enable_if<ft::is_integral<InputIterator>::value == 0>::type* = 0) {
+			typename ft::enable_if<ft::is_integral<InputIterator>::value == 0>::type* = 0)
+		{
 			size_type pos = position - this->begin();
 			size_type n = 0;
 
-			for (InputIterator firstCopy = first, lastCopy = last; firstCopy != lastCopy; ++firstCopy)
+			for (InputIterator firstCopy = first; firstCopy != last; ++firstCopy)
 				++n;
+
+			if (!n)
+				return ;
 
 			if (this->_size + n > this->_cap) {
 				if (this->_size + n > this->_cap * 2)
@@ -257,32 +267,30 @@ namespace ft {
 					this->reserve(this->_cap * 2);
 			}
 
-			for (size_type i = this->_size + n - 1; i > pos; --i) {
-				if (i >= this->_size)
-					this->_allocator.construct(&this->_start[i], (int)((int)i - n) >= 0 ? this->_start[i - n] : 0);
-				else
-					this->_start[i] = (int)((int)i - n) >= 0 ? this->_start[i - n] : 0;
+			if (this->_size > 0 && pos != this->_size) {
+				for (size_type i = this->_size - 1; i >= pos; --i) {
+					if (i + n >= this->_size)
+						this->_allocator.construct(this->_start + i + n, this->_start[i]);
+					else this->_start[i + n] = this->_start[i];
+
+					if (i == pos)
+						break;
+				}
 			}
-			for (size_type i = 0; i < n; ++i) {
-				if (pos + i > this->_size)
-					this->_allocator.construct(&this->_start[pos + i], *(first++));
-				else
-					this->_start[pos + i] = *(first++);
+
+			for (size_type i = pos; i != pos + n; ++i, ++first) {
+				if (i >= this->_size)
+					this->_allocator.construct(this->_start + i, *first);
+				else this->_start[i] = *first;
 			}
 			this->_size += n;
 		}
 
 		iterator erase(iterator position) {
-			size_type ret = position - this->begin();
-			--this->_size;
-			if (position == this->end()) {
-				this->_allocator.destroy(&(*(this->end())));
-				return this->end();
-			}
-			for (size_type i = ret, j = 0; i < this->_size; ++i, ++j)
-				*(position + j) = *(position + j + 1);
-			this->_allocator.destroy(&(*(this->end() + 1)));
-			return this->begin() + ret;
+			erase(position, position + 1);
+
+			return position;
+
 		}
 
 		iterator erase(iterator first, iterator last) {
@@ -305,7 +313,7 @@ namespace ft {
 		}
 
 		void clear(void) {
-			for (size_type i = 0; i != size(); ++i)
+			for (size_type i = 0; i != _size; ++i)
 				this->_allocator.destroy(this->_start + i);
 
 			this->_size = 0;

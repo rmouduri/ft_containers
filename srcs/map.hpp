@@ -15,7 +15,7 @@ namespace ft
 	public:
 		typedef Key									key_type;
 		typedef T									mapped_type;
-		typedef pair<const key_type, mapped_type>			value_type;
+		typedef pair<const key_type, mapped_type>	value_type;
 		typedef Compare								key_compare;
 		typedef Alloc								allocator_type;
 
@@ -89,7 +89,7 @@ namespace ft
 
 		iterator end() { return this->_data.end(); }
 		const_iterator end() const { return this->_data.end(); }
-		
+
 		reverse_iterator rbegin() { return this->_data.rbegin(); }
 		const_reverse_iterator rbegin() const { return this->_data.rbegin(); }
 

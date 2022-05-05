@@ -357,7 +357,11 @@ namespace ft {
 			typedef TreeReverseIterator<Node * , 2>		reverse_iterator;
 			typedef TreeConstReverseIterator<Node * , 3>	const_reverse_iterator;
 
-		BTree(): _root(0), _size(0), _comp(), _allocator(), _begin(allocateNode(T(), 0)), _end(allocateNode(T(), 0)) {}
+		BTree(): _root(0), _size(0), _comp(), _allocator(), _begin(allocateNode(T(), 0)), _end(allocateNode(T(), 0)) {
+			// _root = _begin;
+			// _begin->right = _end;
+			// _end->left = _begin;
+		}
 		BTree(const BTree & rhs):	_root(_copyRoot(_allocator, rhs._root)),
 									_size(rhs._size),
 									_comp(rhs._comp),
