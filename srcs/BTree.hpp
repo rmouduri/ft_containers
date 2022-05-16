@@ -68,10 +68,8 @@ namespace ft {
 		template<typename ItT, int B> //ItT = Node * , T = pair<Key, mapped_type>
 		class TreeIterator {
 			// protected:
-			public:
+			protected:
 				ItT _current;
-
-				ItT getCurrent(void) const { return this->_current; }
 
 			public:
 				TreeIterator(): _current(0) {}
@@ -105,6 +103,7 @@ namespace ft {
 
 					return *this;
 				}
+				ItT getCurrent(void) const { return this->_current; }
 
 				TreeIterator operator++(int) {
 					TreeIterator it(*this);
@@ -143,8 +142,6 @@ namespace ft {
 		template<typename ItT, int B>
 		class TreeConstIterator: public TreeIterator<ItT, B> {
 			// protected:
-			public:
-				const ItT getCurrent(void) const { return this->_current; }
 
 			public:
 				TreeConstIterator() { this->_current = 0; }
@@ -162,6 +159,7 @@ namespace ft {
 
 				const T & operator*(void) const { return this->_current->data; }
 				const T * operator->(void) const { return &this->_current->data; }
+				const ItT getCurrent(void) const { return this->_current; }
 
 		};
 
@@ -248,9 +246,6 @@ namespace ft {
 
 		template<typename ItT, int B>
 		class TreeConstReverseIterator: public TreeIterator<ItT, B> {
-			// protected:
-			public:
-				const ItT getCurrent(void) const { return this->_current; }
 
 			public:
 				TreeConstReverseIterator() { this->_current = 0; }
@@ -282,7 +277,8 @@ namespace ft {
 
 				const T * operator->(void) const { 
 					return &this->operator*();
-				 }
+				}
+				const ItT getCurrent(void) const { return this->_current; }
 
 				TreeConstReverseIterator & operator--(void) {
 					if (!this->_current->right) {

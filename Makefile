@@ -1,15 +1,17 @@
 CC			=	clang++
 FLAGS		=	-Wall -Wextra -Werror -std=c++98
-INCLUDES	=	-I/srcs/ -Itester/includes_and_utils -Itester/select_your_tests
+INCLUDES	=	-Itester/includes -Isrcs/
+DIR_OBJ		=	obj/
+DIR_SRC		=	tester/srcs/
 
-VECTOR_FT_SRCS	=	tester/select_your_tests/main_vector_ft.cpp tester/includes_and_utils/utils.cpp
-VECTOR_STD_SRCS	=	tester/select_your_tests/main_vector_std.cpp tester/includes_and_utils/utils.cpp
+VECTOR_FT_SRCS	=	$(addprefix $(DIR_SRC), main_vector_ft.cpp utils.cpp)
+VECTOR_STD_SRCS	=	$(addprefix $(DIR_SRC), main_vector_std.cpp utils.cpp)
 
-MAP_FT_SRCS		=	tester/select_your_tests/main_map_ft.cpp tester/includes_and_utils/utils.cpp
-MAP_STD_SRCS	=	tester/select_your_tests/main_map_std.cpp tester/includes_and_utils/utils.cpp
+MAP_FT_SRCS		=	$(addprefix $(DIR_SRC), main_map_ft.cpp utils.cpp)
+MAP_STD_SRCS	=	$(addprefix $(DIR_SRC), main_map_std.cpp utils.cpp)
 
-STACK_FT_SRCS	=	tester/select_your_tests/main_stack_ft.cpp tester/includes_and_utils/utils.cpp
-STACK_STD_SRCS	=	tester/select_your_tests/main_stack_std.cpp tester/includes_and_utils/utils.cpp
+STACK_FT_SRCS	=	$(addprefix $(DIR_SRC), main_stack_ft.cpp utils.cpp)
+STACK_STD_SRCS	=	$(addprefix $(DIR_SRC), main_stack_std.cpp utils.cpp)
 
 OBJS_VECTOR_FT	=	$(VECTOR_FT_SRCS:.cpp=.o)
 OBJS_VECTOR_STD	=	$(VECTOR_STD_SRCS:.cpp=.o)
@@ -42,7 +44,7 @@ fclean	:	clean
 
 re		:	fclean all
 
-.PHONY	:	all clean fclean re
+.PHONY	:	all clean fclean re vector map stack
 
 %.o		:	%.cpp
 			$(CC) $(FLAGS) -o $@ -c $<
