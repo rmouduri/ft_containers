@@ -10,7 +10,7 @@ int main(void)
 							-1, 2, 3, 4, 5, 6, 7, 7, 8, 54634152, 9, 
 							10, 11, 56, 56465};
 
-	const std::string arrString[20] = {"hello coco", "j'arrive", "oui-oui", "kafeolait", 
+	const std::string arrString[20] = {"hello cocos", "j'arrive", "oui-oui", "kafeolait", 
 										"jul d'ananas", "jul d'ananas", "42", "jura", 
 										"saperlipopette", "anticonstitutionnellement", 
 										"Pneumonoultramicroscopicsilicovolcanoconiosis", "Blue", 
