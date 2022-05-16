@@ -16,21 +16,13 @@ namespace ft {
 
 		explicit stack(const container_type & ctnr = container_type()): c(ctnr) {}
 
-		stack(const stack & ctnr): c(ctnr.c) {}
-
-		stack & operator=(const stack & rhs) {
-			if (this != &rhs)
-				c = rhs.c;
-			return *this;
-		}
-
-		~stack() {}
-
 		bool empty(void) const { return c.empty(); }
 
 		size_type size(void) const { return c.size(); }
 
 		value_type & top(void) { return c.back(); }
+
+		const value_type & top(void) const { return c.back(); }
 
 		void push(const value_type & val) { c.push_back(val); }
 

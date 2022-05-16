@@ -48,7 +48,7 @@ namespace ft
 				bool operator()(const value_type & x, const value_type & y) const { return comp(x.first, y.first); }
 		}; // value_compare
 
-		map(): _comp(), _allocator(), _data() {}
+		explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()): _comp(comp), _allocator(alloc), _data() {}
 
 		template<typename InputIt>
 		map(InputIt first, InputIt last, const Compare & comparator = Compare(), const Alloc & alloc = Alloc()): _comp(comparator), _allocator(alloc) {
@@ -71,18 +71,6 @@ namespace ft
 			return *this;
 		}
 
-		ft::pair<iterator, bool> insert(const value_type & val) {
-			return this->_data.insert(val);
-		}
-
-		iterator insert (iterator position, const value_type & val) {
-			return this->_data.insert(position, val);
-		}
-
-		template<typename InputIt>
-		void insert(InputIt first, InputIt last) {
-			_data.insert(first, last);
-		}
 
 		iterator begin() { return this->_data.begin(); }
 		const_iterator begin() const { return this->_data.begin(); }
@@ -96,13 +84,13 @@ namespace ft
 		reverse_iterator rend() { return this->_data.rend(); }
 		const_reverse_iterator rend() const { return this->_data.rend(); }
 
+
+		bool empty() const { return !this->_data.getSize(); }
+
 		size_type size() const { return this->_data.getSize(); }
 
 		size_type max_size() const { return this->_data.getMaxSize(); }
 
-		iterator find(const key_type & k) { return iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
-
-		const_iterator find(const key_type & k) const { return const_iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
 
 		mapped_type & operator[](const key_type & k) {
 			iterator it = this->find(k);
@@ -113,19 +101,27 @@ namespace ft
 				return this->insert(ft::make_pair(k, T())).first->second;
 		}
 
-		key_compare key_comp() const { return this->_comp; }
 
-		value_compare value_comp() const { return value_compare(this->_comp); }
-
-		bool empty() const { return !this->_data.getSize(); }
-
-		allocator_type get_allocator() const { return this->_allocator; }
-
-		size_type count(const key_type & k) const {
-			const_iterator it = this->find(k);
-
-			return it != this->end();
+		ft::pair<iterator, bool> insert(const value_type & val) {
+			return this->_data.insert(val);
 		}
+
+		iterator insert (iterator position, const value_type & val) {
+			return this->_data.insert(position, val);
+		}
+
+		template<typename InputIt>
+		void insert(InputIt first, InputIt last) {
+			_data.insert(first, last);
+		}
+
+
+		void erase(iterator pos) { _data.erase(pos); }
+
+		size_type erase(const key_type & k) { return _data.erase(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
+
+		void erase(iterator first, iterator last) { _data.erase(first, last); }
+
 
 		void swap(map & rhs) {
 			if (this != &rhs)
@@ -134,11 +130,23 @@ namespace ft
 
 		void clear() { this->_data.clear(this->_data._getRoot()); }
 
-		size_t erase(const key_type & k) { return _data.erase(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
 
-		void erase(iterator pos) { _data.erase(pos); }
+		key_compare key_comp() const { return this->_comp; }
 
-		void erase(iterator first, iterator last) { _data.erase(first, last); }
+		value_compare value_comp() const { return value_compare(this->_comp); }
+
+
+		iterator find(const key_type & k) { return iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
+
+		const_iterator find(const key_type & k) const { return const_iterator(this->_data.findNode(this->_data._getRoot(), ft::make_pair(k, T()))); }
+
+
+		size_type count(const key_type & k) const {
+			const_iterator it = this->find(k);
+
+			return it != this->end();
+		}
+
 
 		iterator lower_bound(const key_type & k) { return _data.lower_bound(ft::make_pair(k, typename value_type::second_type())); }
 
@@ -160,20 +168,20 @@ namespace ft
 																							k, 
 																							typename value_type::second_type())); }
 
+
+		allocator_type get_allocator() const { return this->_allocator; }
+
+
 		friend bool operator==(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data == rhs._data; }
-
 		friend bool operator!=(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data != rhs._data; }
-
 		friend bool operator<(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data < rhs._data; }
-
 		friend bool operator>(const ft::map<Key, T, Compare, Alloc> & lhs, const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data > rhs._data; }
-
 		friend bool operator<=(const ft::map<Key, T, Compare, Alloc> & lhs,  const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data <= rhs._data; }
-
 		friend bool operator>=(const ft::map<Key, T, Compare, Alloc> & lhs,  const ft::map<Key, T, Compare, Alloc> & rhs) { return lhs._data >= rhs._data; }
 
 		private:
 			void print2d() { this->_data.print2D(); }
+
 	}; // map
 } // namespace ft
 

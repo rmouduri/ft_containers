@@ -67,6 +67,11 @@ namespace ft {
 				_allocator.construct(&_start[i], newVector._start[i]);
 		}
 
+		~vector() {
+			this->clear();
+			this->_allocator.deallocate(this->_start, this->_cap);
+		}
+
 		vector & operator=(const vector & newVector) {
 			this->_allocator = newVector._allocator;
 			this->_cap = newVector._cap;
@@ -75,11 +80,6 @@ namespace ft {
 			for (size_type i = 0; i < _size; i++)
 				_allocator.construct(&_start[i], newVector._start[i]);
 			return *this;
-		}
-
-		~vector() {
-			this->clear();
-			this->_allocator.deallocate(this->_start, this->_cap);
 		}
 
 
@@ -123,12 +123,10 @@ namespace ft {
 		bool empty() const { return !this->_size; }
 
 		void reserve(size_type newCap) {
-			if (this->_cap >= newCap) {
+			if (this->_cap >= newCap)
 				return;
-			}
-			if (newCap >= this->max_size()) {
+			if (newCap >= this->max_size())
 				throw std::length_error("newCap is greater than max_size");
-			}
 
 			pointer newStart = _allocator.allocate(newCap);
 
@@ -330,7 +328,6 @@ namespace ft {
 		friend bool operator==(const vector & lhs, const vector & rhs) {
 			if (lhs.size() != rhs.size())
 				return false;
-			// std::cout << "sizeOK" << '\n';
 			vector tmpl = lhs;
 			vector tmpr = rhs;
 			return ft::equal(tmpl.begin(), tmpl.end(), tmpr.begin());
