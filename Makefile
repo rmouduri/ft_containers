@@ -1,3 +1,4 @@
+NAME		=	ft_containers
 CC			=	clang++
 FLAGS		=	-Wall -Wextra -Werror -std=c++98
 INCLUDES	=	-Itester/includes -Isrcs/
@@ -22,7 +23,9 @@ OBJS_MAP_STD	=	$(MAP_STD_SRCS:.cpp=.o)
 OBJS_STACK_FT	=	$(STACK_FT_SRCS:.cpp=.o)
 OBJS_STACK_STD	=	$(STACK_STD_SRCS:.cpp=.o)
 
-all		:	vector map stack
+$(NAME)	:	vector map stack
+
+all		:	$(NAME)
 
 vector		:	vector_ft vector_std
 
