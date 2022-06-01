@@ -356,7 +356,7 @@ namespace ft {
 
 		//////////////////////// Other ////////////////////////
 
-		friend void swap(vector & x, vector & y) { x.swap(y); }
+		void swap(vector & x, vector & y) { x.swap(y); }
 
 	private:
 		template<typename U>
